@@ -1,5 +1,7 @@
 # HackCamp React
 
+[![Join the chat at https://gitter.im/hackcamp-react/Lobby](https://badges.gitter.im/hackcamp-react/Lobby.svg)](https://gitter.im/hackcamp-react/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 ## HackJam 1: Introduction to React
 
 ### Topics covered

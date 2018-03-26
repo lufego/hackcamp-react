@@ -1,9 +1,20 @@
-import React, {Component} from 'react';
-import logo from './images/hackflix_logo.svg';
-import filters from './mocks/filters';
-import './css/Header.css';
-import movies from './mocks/movies';
-import {Movie} from "./components/Movie";
+import React, { Component } from "react";
+import logo from "./images/hackflix_logo.svg";
+import filters from "./mocks/filters";
+import "./css/Header.css";
+import movies from "./mocks/movies";
+import genres from "./mocks/genres";
+import { Movie } from "./components/Movie";
+import { Header } from "./components/Header";
+import { Gallery } from "./components/Gallery";
+import { Filters } from "./components/Filters";
+import { SideBar } from "./components/SideBar";
+
+const matchCategoryWithId = name =>
+  genres.find(genre => genre.name === name).id;
+
+const filterByCategory = (category, movie) =>
+  movie.genre_ids.includes(matchCategoryWithId(category));
 
 export class App extends Component {
   state = {
@@ -12,6 +23,26 @@ export class App extends Component {
   };
 
   selectTab = category => {
+    if (category === "All") {
+      return this.setState({
+        movies: movies,
+        filters: this.state.filters.map(
+          filter => {
+            filter.selected = filter.category === category
+            return filter;
+          }
+        )
+      });
+    }
+    this.setState({
+      movies: movies.filter(movie => filterByCategory(category, movie)),
+      filters: this.state.filters.map(
+        filter => {
+          filter.selected = filter.category === category
+          return filter;
+        }
+      )
+    });
     // We need to update the `selected` property of the clicked category to be true.
     // We should also filter the movies which are passed to the movie list
   };
@@ -21,59 +52,20 @@ export class App extends Component {
   };
 
   render() {
-    const {movies, filters} = this.state;
+    const { movies, filters } = this.state;
+
     return (
-      <header>
-        <img src=logo alt="logo" />
-      </header>
-      <main class="main-content">
-        <div className="tab-filter-wrapper">
-          <div className="tab-filter">
-            <div className="filters">
-              <ul className="filters-list">
-                {filters.map(filter =>
-                  <li onClick={() => this.selectTab()}>
-                    <a className={filter.selected ? 'selected' : ''}>
-                      {filter.category}
-                    </a>
-                  </li>
-                )}
-              </ul>
-              <ul className="misc">
-                <li class="counter">
-                  <a>42</a>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
+      <div>
+        <Header />
+        <main className="main-content">
+          <Filters filters={filters} selectTab={this.selectTab} />
 
-        {/*If the sidebar is open you need to add the css class filter-is-visible to the div below*/}
-        <section class="gallery">
-          {movies.map(movie =>
-            <Movie key={movie.id} data={movie} selectMovie={() => {alert("Movie clicked")}} />
-          )}
-        </section>
-
-        <div>
           {/*If the sidebar is open you need to add the css class filter-is-visible to the div below*/}
-          <div className={'filter'}>
-            <form onSubmit={e => e.preventDefault()}>
-              <div className="filter-block">
-                <h4>Search</h4>
-                <div className="filter-content">
-                  <input type="search" placeholder="title" />
-                </div>
-              </div>
-            </form>
-            <a className="hand-cursor close-f" [onClick]="[{(this.openSideBar)}]">Close</a>
-          </div>
+          <Gallery movies={movies} />
 
-          <a className="hand-cursor filter-trigger">
-            Filters
-          </a>
-        </div>
-      </main>
+          <SideBar />
+        </main>
+      </div>
     );
   }
 }

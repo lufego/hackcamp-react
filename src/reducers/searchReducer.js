@@ -14,10 +14,10 @@ const reducer = {
   }),
   [SELECT_TAB]: (state, category) => ({
     ...state,
-    filters: filters.map(filter => {
-      filter.selected = filter.category === category;
-      return filter;
-    }),
+    filters: filters.map(filter => ({
+      ...filter,
+      selected: filter.category === category
+    })),
     selectedFilter: category
   })
 };

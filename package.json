@@ -2,6 +2,7 @@
   "name": "hackcamp.react",
   "version": "0.1.0",
   "private": true,
+  "proxy": "https://hackflix.calapez.me",
   "dependencies": {
     "axios": "^0.16.2",
     "bootstrap": "^4.0.0-beta",

@@ -1,25 +1,35 @@
-import React, {Component} from 'react';
-import axios from 'axios';
+import React, { Component } from "react";
+import axios from "axios";
 
-import {Header} from './components/Header';
-import {Main} from './components/Main';
-import {MovieDetail} from './components/MovieDetail';
-import {Cart} from './cart/Cart';
-import {SERVER_URL} from './constants/config';
+import { Header } from "./components/Header";
+import { Main } from "./components/Main";
+import { MovieDetail } from "./components/MovieDetail";
+import { Cart } from "./cart/Cart";
+import { SERVER_URL } from "./constants/config";
 
 export class App extends Component {
   state = {
     selectedPage: null,
     movies: [],
-    cart: []
+    cart: [],
+    loading: false
   };
 
   componentDidMount() {
     // Fetch the movies here from SERVER_URL/movies then update your state accordingly
+    this.setState({
+      loading: true
+    });
+    axios.get("/movies").then(({ data }) => {
+      this.setState({
+        movies: data,
+        loading: false
+      });
+    });
   }
 
   selectPage = page => {
-    this.setState({selectedPage: page});
+    this.setState({ selectedPage: page });
   };
 
   // Shopping Cart
@@ -35,7 +45,11 @@ export class App extends Component {
   removeFromCart = () => {};
 
   render() {
-    const {selectedPage, movies, cart} = this.state;
+    const { selectedPage, movies, cart, loading } = this.state;
+    if (loading) {
+      return <h1>Loading...</h1>;
+    }
+
     return (
       <div>
         <Header />

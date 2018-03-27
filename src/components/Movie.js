@@ -11,13 +11,19 @@ export class Movie extends Component {
 
   // Create a function to hide/show the body of the movie on hover
   // You are not allowed to use CSS to solve this challenge 😅
+  toggleBody = () => {
+    this.setState({
+      showBody: !this.state.showBody
+    })
+  }
 
   render() {
     const {data, selectMovie, addToCart, isInCart, removeFromCart} = this.props;
     const {showBody} = this.state;
     return (
       <div
-        onMouseEnter={() => {}}
+        onMouseEnter={this.toggleBody}
+        onMouseLeave={this.toggleBody}
         className="movie"
       >
         <img
